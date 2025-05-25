@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./fastApi
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./fastApi:/app
+      - ./fastApi/uploads:/app/uploads
+      - ./fastApi/audio:/app/audio
+    environment:
+      - GROQ_API_KEY=${GROQ_API_KEY}
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./Video_Transcription_Frontend
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./Video_Transcription_Frontend:/app
+      - /app/node_modules
+      - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - NODE_ENV=development
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge 
