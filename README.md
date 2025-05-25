@@ -102,27 +102,11 @@ To stop and remove all containers, networks, and volumes:
 
 ```bash
 docker compose down --volumes --remove-orphans
-```
 
-## 🔧 Troubleshooting
-
-**Port conflicts**: If ports 3000 or 8000 are already in use, modify the port mappings in `docker-compose.yml`
-
-**Build issues**: Try rebuilding with no cache:
-
-```bash
-docker compose build --no-cache
-docker compose up
-```
-
-**Container logs**: View logs to debug issues:
-
-```bash
-docker compose logs [service-name]
 ```
 
 ## 📝 Additional Notes
 
 - Ensure sufficient disk space for Docker images and video processing
 - Large video files may take longer to process depending on your system resources
-- The application supports common video formats (check backend documentation for specific format support)
+- The application supports common video formats
